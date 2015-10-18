@@ -1,61 +1,61 @@
 package org.caliog.SpellCollection;
 
-import org.caliog.myRPG.Manager;
 import org.caliog.myRPG.Entities.myClass;
 import org.caliog.myRPG.Spells.Spell;
-import org.caliog.myRPG.Utils.ParticleEffect;
 
 public class ArmorSpell extends Spell {
-    public ArmorSpell(myClass player) {
-	super(player, "ArmorSpell");
-    }
-
-    public boolean execute() {
-	if (!super.execute()) {
-	    return false;
+	public ArmorSpell(myClass player) {
+		super(player, "ArmorSpell");
 	}
-	long time = Math.round(getPower() / 5.0F * 20.0F * 90.0F);
-	activate(time);
-	Manager.scheduleRepeatingTask(new Runnable() {
-	    public void run() {
-		ParticleEffect.SPELL_WITCH.display(0.2F, 0.3F, 0.2F, 0.2F, 10, getPlayer().getPlayer().getLocation(),
-			20D);
 
-	    }
-	}, 0L, 1L, time);
-	return true;
-    }
-
-    public int getMinLevel() {
-	return 1;
-    }
-
-    public int getFood() {
-	return getPower();
-    }
-
-    public int getPower() {
-	int level = getPlayer().getLevel();
-	if (level < 5) {
-	    return 1;
+	public boolean execute() {
+		if (!super.execute()) {
+			return false;
+		}
+		activate(getTime() * 20L);
+		return true;
 	}
-	if (level < 10) {
-	    return 2;
-	}
-	if (level < 15) {
-	    return 3;
-	}
-	if (level < 20) {
-	    return 4;
-	}
-	return 5;
-    }
 
-    public int getDamage() {
-	return 0;
-    }
+	@Override
+	public double getDamage() {
+		return 0;
+	}
 
-    public int getDefense() {
-	return getPower();
-    }
+	@Override
+	public double getDefense() {
+		return (1 + getPower()) * getPlayer().getDefense();
+	}
+
+	@Override
+	public float getPower() {
+		return getPlayer().getLevel() * 0.004F + 0.1F;
+	}
+
+	@Override
+	public int getFood() {
+		return Math.round(getPower() * 6);
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 1;
+	}
+
+	public int getTime() {
+		int level = getPlayer().getLevel();
+		if (level < 5) {
+			return 18;
+		}
+		if (level < 10) {
+			return 36;
+		}
+		if (level < 15) {
+			return 54;
+		}
+		if (level < 20) {
+			return 72;
+		}
+		return 90;
+	}
+
 }

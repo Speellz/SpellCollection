@@ -1,59 +1,56 @@
 package org.caliog.SpellCollection;
 
-import org.caliog.myRPG.Manager;
 import org.caliog.myRPG.Entities.myClass;
 import org.caliog.myRPG.Spells.Spell;
-import org.caliog.myRPG.Utils.ParticleEffect;
 
 public class SwordSpell extends Spell {
-    public SwordSpell(myClass player) {
-	super(player, "SwordSpell");
-    }
-
-    public boolean execute() {
-	if (!super.execute()) {
-	    return false;
+	public SwordSpell(myClass player) {
+		super(player, "SwordSpell");
 	}
-	long time = Math.round(getPower() / 5.0F * 20.0F * 60.0F);
-	activate(time);
-	Manager.scheduleRepeatingTask(new Runnable() {
-	    public void run() {
-		ParticleEffect.VILLAGER_HAPPY.display(0.2F, 0.15F, 0.2F, 0.8F, 2, getPlayer().getPlayer().getLocation()
-			.add(0, getPlayer().getPlayer().getEyeHeight() * 3 / 4, 0), 30D);
 
-	    }
-	}, 0L, 1L, time);
-
-	return true;
-    }
-
-    public int getMinLevel() {
-	return 1;
-    }
-
-    public int getFood() {
-	return getPower();
-    }
-
-    public int getPower() {
-	int level = getPlayer().getLevel();
-	if (level < 5) {
-	    return 2;
+	@Override
+	public boolean execute() {
+		if (!super.execute()) {
+			return false;
+		}
+		long time = Math.round(getPower() / 5.0F * 20.0F * 60.0F);
+		activate(time);
+		return true;
 	}
-	if (level < 10) {
-	    return 3;
-	}
-	if (level < 15) {
-	    return 4;
-	}
-	return 5;
-    }
 
-    public int getDamage() {
-	return getPower();
-    }
+	@Override
+	public double getDamage() {
+		return (1 + getPower()) * getPlayer().getDamage();
+	}
 
-    public int getDefense() {
-	return 0;
-    }
+	@Override
+	public double getDefense() {
+		return 0;
+	}
+
+	@Override
+	public float getPower() {
+		int level = getPlayer().getLevel();
+		if (level < 5) {
+			return 0.2F;
+		}
+		if (level < 10) {
+			return 0.3F;
+		}
+		if (level < 15) {
+			return 0.45F;
+		}
+		return 0.5F;
+	}
+
+	@Override
+	public int getFood() {
+		return Math.round(getPower());
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 1;
+	}
+
 }

@@ -6,53 +6,58 @@ import org.caliog.myRPG.Entities.myClass;
 import org.caliog.myRPG.Spells.Spell;
 
 public class TripleShot extends Spell {
-    public TripleShot(myClass player) {
-	super(player, "TripleShot");
-    }
-
-    public boolean execute() {
-	if (!super.execute()) {
-	    return false;
+	public TripleShot(myClass player) {
+		super(player, "TripleShot");
 	}
-	Manager.scheduleRepeatingTask(new Runnable() {
-	    public void run() {
-		getPlayer().getPlayer().launchProjectile(Arrow.class);
-	    }
-	}, 10L, 4L, getPower() * 4L);
 
-	return true;
-    }
+	public boolean execute() {
+		if (!super.execute()) {
+			return false;
+		}
+		Manager.scheduleRepeatingTask(new Runnable() {
+			public void run() {
+				getPlayer().getPlayer().launchProjectile(Arrow.class);
+			}
+		}, 10L, 4L, Math.round(getPower() * 4L));
 
-    public int getMinLevel() {
-	return 2;
-    }
-
-    public int getFood() {
-	return 5;
-    }
-
-    public int getPower() {
-	int level = getPlayer().getLevel();
-	if (level < 5) {
-	    return 2;
+		return true;
 	}
-	if (level < 10) {
-	    return 5;
-	}
-	if (level < 15) {
-	    return 7;
-	}
-	if (level < 20) {
-	    return 9;
-	}
-	return 10;
-    }
 
-    public int getDamage() {
-	return 0;
-    }
+	@Override
+	public double getDamage() {
+		return 0;
+	}
 
-    public int getDefense() {
-	return 0;
-    }
+	@Override
+	public double getDefense() {
+		return 0;
+	}
+
+	@Override
+	public float getPower() {
+		int level = getPlayer().getLevel();
+		if (level < 5) {
+			return 2;
+		}
+		if (level < 10) {
+			return 5;
+		}
+		if (level < 15) {
+			return 7;
+		}
+		if (level < 20) {
+			return 9;
+		}
+		return 10;
+	}
+
+	@Override
+	public int getFood() {
+		return Math.round(getPower() / 10F * 6);
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 2;
+	}
 }
