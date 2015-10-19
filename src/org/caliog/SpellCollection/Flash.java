@@ -75,13 +75,13 @@ public class Flash extends Spell {
 		if (level < 10)
 			return 2;
 		else if (level < 15)
-			return 3;
-		else if (level < 25)
 			return 4;
-		else if (level < 50)
-			return 6;
-		else
+		else if (level < 25)
 			return 5;
+		else if (level < 50)
+			return 7;
+		else
+			return 6;
 	}
 
 	@Override

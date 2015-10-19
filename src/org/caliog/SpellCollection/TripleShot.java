@@ -40,24 +40,24 @@ public class TripleShot extends Spell {
 			return 2;
 		}
 		if (level < 10) {
-			return 5;
-		}
-		if (level < 15) {
-			return 7;
+			return 3;
 		}
 		if (level < 20) {
-			return 9;
+			return 5;
 		}
-		return 10;
+		if (level < 40) {
+			return 6;
+		}
+		return 7;
 	}
 
 	@Override
 	public int getFood() {
-		return Math.round(getPower() / 10F * 6);
+		return Math.round(getPower() / 7F * 8 + 2);
 	}
 
 	@Override
 	public int getMinLevel() {
-		return 2;
+		return 1;
 	}
 }

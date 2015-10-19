@@ -49,7 +49,7 @@ public class BlackArmor extends Spell {
 
 	@Override
 	public int getFood() {
-		return Math.round(getPower());
+		return Math.round(getPower() * 6 + 2);
 	}
 
 	@Override

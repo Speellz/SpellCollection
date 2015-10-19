@@ -33,7 +33,7 @@ public class ArmorSpell extends Spell {
 
 	@Override
 	public int getFood() {
-		return Math.round(getPower() * 6);
+		return Math.round(getPower() * 4 + 2);
 	}
 
 	@Override

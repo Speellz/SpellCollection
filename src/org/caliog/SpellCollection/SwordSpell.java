@@ -45,7 +45,7 @@ public class SwordSpell extends Spell {
 
 	@Override
 	public int getFood() {
-		return Math.round(getPower());
+		return Math.round(getPower() * 8 + 2);
 	}
 
 	@Override

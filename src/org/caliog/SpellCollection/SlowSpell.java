@@ -31,7 +31,7 @@ public class SlowSpell extends Spell {
 	}
 
 	public int getFood() {
-		return Math.round(getPower() / 25.0F * 6.0F);
+		return Math.round(getPower() / 25.0F * 6.0F + 1.5F);
 	}
 
 	public float getPower() {

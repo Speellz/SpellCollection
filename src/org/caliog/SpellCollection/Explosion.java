@@ -73,7 +73,7 @@ public class Explosion extends Spell {
 
 	@Override
 	public int getFood() {
-		int food = (int) Math.sqrt(getPower() * 16);
+		int food = (int) Math.sqrt(getPower() * 31 + 5);
 		return food;
 	}
 
@@ -83,7 +83,7 @@ public class Explosion extends Spell {
 	}
 
 	public int getRadius() {
-		return Math.round(9 * getPower());
+		return Math.round(9 * getPower() + 1);
 	}
 
 }
