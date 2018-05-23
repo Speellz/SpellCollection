@@ -13,13 +13,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
-import org.caliog.myRPG.Manager;
-import org.caliog.myRPG.Entities.myClass;
-import org.caliog.myRPG.Spells.Spell;
-import org.caliog.myRPG.Utils.ParticleEffect;
+import org.caliog.Rolecraft.Manager;
+import org.caliog.Rolecraft.Entities.Player.RolecraftPlayer;
+import org.caliog.Rolecraft.Spells.Spell;
+import org.caliog.Rolecraft.XMechanics.Utils.ParticleEffect;
 
 public class Explosion extends Spell {
-	public Explosion(myClass player) {
+	public Explosion(RolecraftPlayer player) {
 		super(player, "Explosion");
 	}
 
@@ -39,7 +39,7 @@ public class Explosion extends Spell {
 			@Override
 			public void run() {
 				ParticleEffect.EXPLOSION_LARGE.display(0.2F, 0.2F, 0.2F, 0.2F, 5, target.getLocation(), 30D);
-				target.getWorld().playSound(target.getLocation(), Sound.EXPLODE, 0.6F, 0.9F);
+				target.getWorld().playSound(target.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.6F, 0.9F);
 				for (Entity e : target.getWorld().getEntities()) {
 					if (((e instanceof LivingEntity)) && (e.getEntityId() != getPlayer().getPlayer().getEntityId())
 							&& (e.getLocation().distanceSquared(target.getLocation()) <= r * r)) {
@@ -55,35 +55,17 @@ public class Explosion extends Spell {
 		return true;
 	}
 
-	@Override
-	public double getDamage() {
-		return getPlayer().getDamage() * (1 + getPower());
-	}
-
-	@Override
-	public double getDefense() {
-		return 0;
-	}
-
-	@Override
-	public float getPower() {
-		int p = getPlayer().getLevel();
-		return p * 0.008F + 0.2F;
-	}
-
-	@Override
-	public int getFood() {
-		int food = (int) Math.sqrt(getPower() * 31 + 5);
-		return food;
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 1;
-	}
-
 	public int getRadius() {
-		return Math.round(9 * getPower() + 1);
+		final float x = ((float) getPower()) / getMaxPower();
+		if (x < 0.15)
+			return 4;
+		if (x < 0.33)
+			return 6;
+		if (x < 0.66)
+			return 8;
+		if (x < 0.9)
+			return 10;
+		return 11;
 	}
 
 }

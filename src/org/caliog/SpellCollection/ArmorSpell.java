@@ -1,10 +1,10 @@
 package org.caliog.SpellCollection;
 
-import org.caliog.myRPG.Entities.myClass;
-import org.caliog.myRPG.Spells.Spell;
+import org.caliog.Rolecraft.Entities.Player.RolecraftPlayer;
+import org.caliog.Rolecraft.Spells.Spell;
 
 public class ArmorSpell extends Spell {
-	public ArmorSpell(myClass player) {
+	public ArmorSpell(RolecraftPlayer player) {
 		super(player, "ArmorSpell");
 	}
 
@@ -16,46 +16,27 @@ public class ArmorSpell extends Spell {
 		return true;
 	}
 
-	@Override
-	public double getDamage() {
-		return 0;
-	}
-
-	@Override
-	public double getDefense() {
-		return (1 + getPower()) * getPlayer().getDefense();
-	}
-
-	@Override
-	public float getPower() {
-		return getPlayer().getLevel() * 0.004F + 0.1F;
-	}
-
-	@Override
-	public int getFood() {
-		return Math.round(getPower() * 4 + 2);
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 1;
-	}
-
 	public int getTime() {
-		int level = getPlayer().getLevel();
-		if (level < 5) {
+		final float x = ((float) getPower()) / getMaxPower();
+		if (x < 1 / 12F)
 			return 18;
-		}
-		if (level < 10) {
+
+		if (x < 1 / 6F)
 			return 36;
-		}
-		if (level < 15) {
+
+		if (x < 0.25)
 			return 54;
-		}
-		if (level < 20) {
+
+		if (x < 1 / 3F)
 			return 72;
-		}
-		return 90;
+
+		if (x < 2 / 3F)
+			return 90;
+
+		if (x == 1)
+			return 110;
+
+		return 10;
 	}
 
 }

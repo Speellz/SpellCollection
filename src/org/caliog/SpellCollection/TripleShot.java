@@ -1,12 +1,12 @@
 package org.caliog.SpellCollection;
 
 import org.bukkit.entity.Arrow;
-import org.caliog.myRPG.Manager;
-import org.caliog.myRPG.Entities.myClass;
-import org.caliog.myRPG.Spells.Spell;
+import org.caliog.Rolecraft.Manager;
+import org.caliog.Rolecraft.Entities.Player.RolecraftPlayer;
+import org.caliog.Rolecraft.Spells.Spell;
 
 public class TripleShot extends Spell {
-	public TripleShot(myClass player) {
+	public TripleShot(RolecraftPlayer player) {
 		super(player, "TripleShot");
 	}
 
@@ -18,46 +18,20 @@ public class TripleShot extends Spell {
 			public void run() {
 				getPlayer().getPlayer().launchProjectile(Arrow.class);
 			}
-		}, 10L, 4L, Math.round(getPower() * 4L));
-
+		}, 6L, 5L, 15L);
+		activate(25L);
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.caliog.Rolecraft.Spells.Spell#getMaxPower()
+	 * 
+	 * This spell doesn't depend on power, so we set max-power to 1
+	 */
 	@Override
-	public double getDamage() {
-		return 0;
-	}
-
-	@Override
-	public double getDefense() {
-		return 0;
-	}
-
-	@Override
-	public float getPower() {
-		int level = getPlayer().getLevel();
-		if (level < 5) {
-			return 2;
-		}
-		if (level < 10) {
-			return 3;
-		}
-		if (level < 20) {
-			return 5;
-		}
-		if (level < 40) {
-			return 6;
-		}
-		return 7;
-	}
-
-	@Override
-	public int getFood() {
-		return Math.round(getPower() / 7F * 8 + 2);
-	}
-
-	@Override
-	public int getMinLevel() {
+	public int getMaxPower() {
 		return 1;
 	}
 }

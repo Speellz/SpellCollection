@@ -6,12 +6,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.caliog.myRPG.Entities.myClass;
-import org.caliog.myRPG.Spells.Spell;
+import org.caliog.Rolecraft.Entities.Player.RolecraftPlayer;
+import org.caliog.Rolecraft.Spells.Spell;
 
 public class Flash extends Spell {
 
-	public Flash(myClass player) {
+	public Flash(RolecraftPlayer player) {
 		super(player, "Flash");
 	}
 
@@ -54,43 +54,20 @@ public class Flash extends Spell {
 		return true;
 	}
 
-	@Override
-	public double getDamage() {
-		return (0.6F + getPower()) * getPlayer().getDamage();
-	}
-
-	@Override
-	public double getDefense() {
-		return 0;
-	}
-
-	@Override
-	public float getPower() {
-		return getPlayer().getLevel() * 0.008F + 0.2F;
-	}
-
-	@Override
-	public int getFood() {
-		int level = getPlayer().getLevel();
-		if (level < 10)
-			return 2;
-		else if (level < 15)
-			return 4;
-		else if (level < 25)
-			return 5;
-		else if (level < 50)
-			return 7;
-		else
-			return 6;
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 1;
-	}
-
 	public int getRadius() {
-		return Math.round(getPower() * 10);
+		final float x = ((float) getPower()) / getMaxPower();
+		if (x < 0.1)
+			return 4;
+		if (x < 0.2)
+			return 6;
+		if (x < 0.4)
+			return 7;
+		if (x < 0.6)
+			return 8;
+		if (x < 0.8)
+			return 10;
+		return 12;
+
 	}
 
 }
