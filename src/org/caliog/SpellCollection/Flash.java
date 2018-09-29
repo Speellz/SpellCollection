@@ -15,7 +15,6 @@ public class Flash extends Spell {
 		super(player, "Flash");
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute() {
 		if (!super.execute())
@@ -24,17 +23,17 @@ public class Flash extends Spell {
 		Location loc = getPlayer().getPlayer().getLocation();
 		boolean f = true;
 		for (Entity e : loc.getWorld().getEntities()) {
-			if (((e instanceof LivingEntity)) && (e.getEntityId() != getPlayer().getPlayer().getEntityId())
-					&& (e.getLocation().distanceSquared(loc) <= r * r)) {
-				EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(getPlayer().getPlayer(), e, DamageCause.CUSTOM,
-						getDamage());
+			if (((e instanceof LivingEntity)) && !(e.getUniqueId().equals(getPlayer().getPlayer().getUniqueId()))
+					&& (e.getLocation().distanceSquared(loc) <= (r * r))) {
+				EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(getPlayer().getPlayer(), e,
+						DamageCause.CUSTOM, getDamage());
 				Bukkit.getPluginManager().callEvent(event);
 				loc.getWorld().strikeLightningEffect(e.getLocation());
 				f = false;
 			}
 		}
 		if (f) {
-			for (int i = 3; i <= getPower(); i++) {
+			for (int i = 3; i <= getPower() + 3; i++) {
 				Location target = loc.clone();
 				target.add(i, 0, -i);
 				if (Math.random() < 0.4)

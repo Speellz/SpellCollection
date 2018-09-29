@@ -2,6 +2,7 @@ package org.caliog.SpellCollection;
 
 import java.util.HashMap;
 
+import org.bukkit.Particle;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -9,7 +10,6 @@ import org.caliog.Rolecraft.Manager;
 import org.caliog.Rolecraft.Entities.EntityManager;
 import org.caliog.Rolecraft.Entities.Player.RolecraftPlayer;
 import org.caliog.Rolecraft.Spells.Spell;
-import org.caliog.Rolecraft.XMechanics.Utils.ParticleEffect;
 
 public class Stun extends Spell {
 
@@ -22,14 +22,15 @@ public class Stun extends Spell {
 		if (!super.execute())
 			return false;
 
-		final float x = ((float) getPower()) / getMaxPower();
+		final double x = ((double) getPower()) / getMaxPower();
 
-		final double r = (double) x * 10 + 2;
+		final double r = (double) x * 10 + 4;
 
 		for (double w = 0; w <= Math.PI; w += Math.PI / 4D) {
 			Vector v = new Vector(Math.cos(2 * w), 0, Math.sin(2 * w));
 			v.multiply((int) r);
-			ParticleEffect.EXPLOSION_LARGE.display(v, 0.2F, getPlayer().getPlayer().getLocation(), 30D);
+			getPlayer().getPlayer().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL,
+					getPlayer().getPlayer().getLocation().add(v), 2, 1F, 1F, 1F);
 		}
 
 		final HashMap<Creature, Vector> entities = new HashMap<Creature, Vector>();

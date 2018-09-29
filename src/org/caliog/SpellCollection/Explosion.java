@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,14 +17,12 @@ import org.bukkit.util.Vector;
 import org.caliog.Rolecraft.Manager;
 import org.caliog.Rolecraft.Entities.Player.RolecraftPlayer;
 import org.caliog.Rolecraft.Spells.Spell;
-import org.caliog.Rolecraft.XMechanics.Utils.ParticleEffect;
 
 public class Explosion extends Spell {
 	public Explosion(RolecraftPlayer player) {
 		super(player, "Explosion");
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute() {
 		if (!super.execute()) {
@@ -34,17 +33,19 @@ public class Explosion extends Spell {
 		set.add(Material.AIR);
 		final Block target = getPlayer().getPlayer().getTargetBlock(set, r * 2).getRelative(BlockFace.UP);
 		Vector v = target.getLocation().toVector().subtract(getPlayer().getPlayer().getEyeLocation().toVector());
-		ParticleEffect.EXPLOSION_NORMAL.display(v, 0.2F, getPlayer().getPlayer().getEyeLocation(), 30D);
+		getPlayer().getPlayer().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL,
+				getPlayer().getPlayer().getEyeLocation().add(v), 2, 1F, 1F, 1F);
 		Manager.scheduleTask(new Runnable() {
 			@Override
 			public void run() {
-				ParticleEffect.EXPLOSION_LARGE.display(0.2F, 0.2F, 0.2F, 0.2F, 5, target.getLocation(), 30D);
+				getPlayer().getPlayer().getWorld().spawnParticle(Particle.EXPLOSION_LARGE, target.getLocation(), 5,
+						0.2F, 0.2F, 0.2F);
 				target.getWorld().playSound(target.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.6F, 0.9F);
 				for (Entity e : target.getWorld().getEntities()) {
 					if (((e instanceof LivingEntity)) && (e.getEntityId() != getPlayer().getPlayer().getEntityId())
 							&& (e.getLocation().distanceSquared(target.getLocation()) <= r * r)) {
-						EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(getPlayer().getPlayer(), e, DamageCause.CUSTOM,
-								getDamage());
+						EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(getPlayer().getPlayer(), e,
+								DamageCause.CUSTOM, getDamage());
 						Bukkit.getPluginManager().callEvent(event);
 					}
 				}
